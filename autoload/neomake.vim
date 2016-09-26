@@ -163,7 +163,7 @@ function! s:MakeJob(make_id, maker) abort
                 " hopefully not necessary anymore and b) might be needed in
                 " real usage, too.
                 if !has('nvim') && exists('g:vader_file')
-                    let program = ['/bin/sh', '-c', join(map(program, 'shellescape(v:val)')) . '; sleep .1']
+                    let program = ['/bin/sh', '-c', 'sleep .05 & '.join(map(program, 'shellescape(v:val)'))]
                 endif
 
                 call neomake#utils#LoudMessage('Starting: ' . string(program))

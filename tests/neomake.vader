@@ -49,7 +49,6 @@ Execute (neomake#Make in project mode with no filetype and no makers):
   else
     AssertEqual len(job_ids), 0
   endif
-
   NeomakeTestsWaitForFinishedJobs
 
 Execute (neomake#GetMaker from g:neomake_foo_maker):
@@ -70,3 +69,10 @@ Execute (neomake#CancelJob):
     NeomakeTestsWaitForFinishedJobs
     AssertEqual neomake#CancelJob(job_id), 0
   endif
+
+Execute (Reports exit status):
+  let job_id = neomake#Sh("sh -c 'exit 7'")
+  NeomakeTestsWaitForFinishedJobs
+  let messages = g:NeomakeTestsGetMessages()
+  let pattern = printf("Neomake: [#%d] exit: sh: sh -c 'exit 7': 7", job_id)
+  AssertNotEqual index(messages, pattern), -1
